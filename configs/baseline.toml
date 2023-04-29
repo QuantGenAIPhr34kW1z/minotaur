@@ -1,0 +1,32 @@
+[CSTNSystems]
+program = "CSTNSystems"
+module  = "minotaur"
+version = "2.9.7"
+
+[solver]
+max_iter = 64
+tol      = 1.0e-10
+damping  = 0.5
+
+[invariants]
+mass_tol   = 1.0e-9
+energy_tol = 1.0e-9
+
+[constraints]
+t4_max = 1400.0
+
+[cycle]
+# Reduced-order / synthetic parameters (non-operational)
+mach = 0.65
+alt_km = 8.0
+
+# "Knobs" for reduced-order behavior
+bpr = 0.6
+opr = 8.0
+
+eta_comp = 0.82
+eta_turb = 0.86
+eta_nozz = 0.95
+
+# Non-dimensionalized fuel parameter (synthetic)
+fuel_k = 1.0

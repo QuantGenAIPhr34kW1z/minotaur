@@ -1,0 +1,27 @@
+# Baseline 02: Low altitude operation
+[CSTNSystems]
+program = "CSTNSystems"
+module = "minotaur"
+version = "2.3.0"
+
+[solver]
+max_iter = 64
+tol = 1.0e-10
+damping = 0.5
+
+[invariants]
+mass_tol = 1.0e-9
+energy_tol = 1.0e-9
+
+[constraints]
+t4_max = 1400.0
+
+[cycle]
+mach = 0.45
+alt_km = 3.0
+bpr = 0.5
+opr = 6.0
+eta_comp = 0.80
+eta_turb = 0.84
+eta_nozz = 0.94
+fuel_k = 1.0

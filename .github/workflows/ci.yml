@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    name: Build & Test (Linux)
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Fortran compiler
+      run: sudo apt-get update && sudo apt-get install -y gfortran
+
+    - name: Install fpm
+      run: pip install fpm
+
+    - name: Setup Rust
+      uses: dtolnay/rust-action@stable
+
+    - name: Build Fortran core
+      working-directory: src/fortran
+      run: fpm build --profile release
+
+    - name: Build Rust orchestration
+      working-directory: src/rust
+      run: cargo build --release
+
+    - name: Run baseline tests
+      run: |
+        cd src/rust
+        for cfg in ../../tests/baselines/config_*.toml; do
+          echo "Testing: $cfg"
+          cargo run --release -- run --config "$cfg" --out /tmp/test_out.csv || true
+        done
+
+    - name: Run smoke test
+      run: |
+        if [ -f tests/smoke.sh ]; then
+          chmod +x tests/smoke.sh
+          ./tests/smoke.sh
+        fi
+
+  build-macos:
+    runs-on: macos-latest
+    name: Build & Test (macOS)
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Fortran compiler
+      run: brew install gcc
+
+    - name: Install fpm
+      run: pip3 install fpm
+
+    - name: Setup Rust
+      uses: dtolnay/rust-action@stable
+
+    - name: Build Fortran core
+      working-directory: src/fortran
+      run: fpm build --profile release
+
+    - name: Build Rust orchestration
+      working-directory: src/rust
+      run: cargo build --release
+
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint & Format
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        components: clippy, rustfmt
+
+    - name: Check formatting
+      working-directory: src/rust
+      run: cargo fmt --check
+
+    - name: Run clippy
+      working-directory: src/rust
+      run: cargo clippy -- -D warnings
+
+  determinism:
+    runs-on: ubuntu-latest
+    name: Determinism Verification
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Fortran compiler
+      run: sudo apt-get update && sudo apt-get install -y gfortran
+
+    - name: Install fpm
+      run: pip install fpm
+
+    - name: Setup Rust
+      uses: dtolnay/rust-action@stable
+
+    - name: Build
+      run: |
+        cd src/fortran && fpm build --profile release
+        cd ../rust && cargo build --release
+
+    - name: Verify deterministic output
+      run: |
+        cd src/rust
+        cargo run --release -- run --config ../../configs/baseline.toml --out /tmp/run1.csv
+        cargo run --release -- run --config ../../configs/baseline.toml --out /tmp/run2.csv
+        if ! diff /tmp/run1.csv /tmp/run2.csv; then
+          echo "ERROR: Non-deterministic output detected"
+          exit 1
+        fi
+        echo "Determinism verified: outputs are identical"

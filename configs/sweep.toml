@@ -1,0 +1,34 @@
+[CSTNSystems]
+program = "CSTNSystems"
+module  = "minotaur"
+version = "2.9.7"
+
+[solver]
+max_iter = 96
+tol      = 1.0e-10
+damping  = 0.4
+
+[invariants]
+mass_tol   = 1.0e-9
+energy_tol = 1.0e-9
+
+[constraints]
+t4_max = 1400.0
+
+[sweep]
+# parameter sweep ranges (synthetic)
+bpr_min = 0.2
+bpr_max = 1.2
+bpr_n   = 21
+
+opr_min = 4.0
+opr_max = 14.0
+opr_n   = 21
+
+[cycle]
+mach = 0.65
+alt_km = 8.0
+eta_comp = 0.82
+eta_turb = 0.86
+eta_nozz = 0.95
+fuel_k   = 1.0

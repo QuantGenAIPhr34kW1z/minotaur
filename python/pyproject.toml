@@ -1,0 +1,43 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "minotaur"
+version = "2.9.0"
+description = "CSTNSystems/MINOTAUR - Deterministic reduced-order turbofan cycle solver"
+readme = "README.md"
+license = { text = "LicenseRef-EINIXSA-Internal-Eval" }
+authors = [{ name = "CSTNSystems" },{ name = "EINIXSA" }]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: EINIX SA Software License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["turbofan", "propulsion", "thermodynamics", "simulation", "optimization"]
+dependencies = [
+    "numpy>=1.20",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "matplotlib>=3.5",
+    "jupyter>=1.0",
+]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "minotaur"
+module-name = "minotaur._minotaur"

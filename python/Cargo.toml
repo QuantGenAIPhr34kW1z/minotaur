@@ -1,0 +1,24 @@
+[package]
+name = "minotaur-python"
+version = "2.9.0"
+edition = "2021"
+license = "LicenseRef-EINIXSA-Internal-Eval"
+authors = ["CSTNSystems","EINIXSA"]
+description = "Python bindings for MINOTAUR turbofan cycle solver"
+
+[lib]
+name = "minotaur_python"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module"] }
+numpy = "0.20"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[build-dependencies]
+cc = "1.0"
+
+[profile.release]
+lto = true
+codegen-units = 1

@@ -1,0 +1,50 @@
+# MINOTAUR v2.4 Baseline: Moderate Degradation Scenario
+# Tests degraded component efficiency and increased losses
+
+[CSTNSystems]
+program = "CSTNSystems"
+module  = "minotaur"
+version = "2.5.0"
+
+[solver]
+max_iter = 200
+tol      = 1.0e-10
+damping  = 0.5
+
+[invariants]
+mass_tol   = 1.0e-9
+energy_tol = 1.0e-9
+
+[constraints]
+t4_max = 1400.0
+
+[cycle]
+mach     = 0.65
+alt_km   = 8.0
+bpr      = 0.6
+opr      = 8.0
+eta_comp = 0.82
+eta_turb = 0.86
+eta_nozz = 0.95
+fuel_k   = 1.0
+
+# v2.4: Component model selection
+[components]
+compressor = "standard"
+turbine    = "standard"
+nozzle     = "standard"
+
+# v2.4: Loss coefficients
+[losses]
+inlet   = 0.02
+burner  = 0.04
+turbine = 0.02
+nozzle  = 0.01
+
+# v2.4: Moderate degradation scenario
+# 10% compressor efficiency loss, 6% turbine efficiency loss, +2% pressure loss
+[degradation]
+eta_comp_factor = 0.90
+eta_turb_factor = 0.94
+loss_adder      = 0.02
+scenario_name   = "moderate"

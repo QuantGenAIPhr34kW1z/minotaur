@@ -1,0 +1,16 @@
+name = "minotaur_fortran"
+version = "2.1.0"
+license = "LicenseRef-EINIXSA-Internal-Eval"
+author = "CSTNSystems,EINIXSA"
+maintainer = "CSTNSystems,EINIXSA"
+copyright = "Copyright (c) CSTNSystems"
+description = "CSTNSystems/minotaur Fortran numerical core (reduced-order cycle solver)"
+categories = ["science", "numerics"]
+
+[library]
+source-dir = "src"
+
+[build]
+auto-executables = false
+auto-tests = false
+auto-examples = false

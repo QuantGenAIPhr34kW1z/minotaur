@@ -1,0 +1,77 @@
+cff-version: 1.2.0
+title: "MINOTAUR: Deterministic Reduced-Order Turbofan Cycle Solver"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - name: "CSTNSystems Research Group"
+    alias: CSTNSystems
+repository-code: "https://github.com/CSTNSystems/minotaur"
+url: "https://github.com/CSTNSystems/minotaur"
+abstract: >
+  MINOTAUR is a deterministic numerical framework for reduced-order
+  thermodynamic cycle analysis of compact low-bypass turbofan systems
+  operating in constrained subsonic regimes. The framework employs a
+  damped Newton solver with Armijo backtracking line search, enforcing
+  physical admissibility through hard constraint gates and conservation
+  law invariants.
+keywords:
+  - turbofan
+  - thermodynamic cycle
+  - reduced-order model
+  - deterministic simulation
+  - constrained optimization
+  - Newton solver
+  - propulsion
+  - reproducible research
+  - numerical methods
+license: LicenseRef-EINIXSA-Internal-Eval
+version: 2.9.0
+date-released: "2023-04-22"
+identifiers:
+  - type: other
+    value: "CSTNSystems-MINOTAUR-v2.5.0"
+    description: "CSTNSystems Program Identifier"
+preferred-citation:
+  type: software
+  title: "MINOTAUR v2.5.0"
+  authors:
+    - name: "CSTNSystems Research Group"
+  year: 2023
+  url: "https://github.com/CSTNSystems/minotaur"
+  notes: "Compact Subsonic Turbofan Numerical Systems"
+references:
+  - type: book
+    title: "Aircraft Engine Design"
+    authors:
+      - family-names: Mattingly
+        given-names: Jack D.
+      - family-names: Heiser
+        given-names: William H.
+      - family-names: Pratt
+        given-names: David T.
+    edition: "2nd"
+    publisher:
+      name: "AIAA"
+    year: 2002
+  - type: book
+    title: "Gas Turbine Performance"
+    authors:
+      - family-names: Walsh
+        given-names: Philip P.
+      - family-names: Fletcher
+        given-names: Paul
+    edition: "2nd"
+    publisher:
+      name: "Blackwell"
+    year: 2004
+  - type: book
+    title: "Numerical Optimization"
+    authors:
+      - family-names: Nocedal
+        given-names: Jorge
+      - family-names: Wright
+        given-names: Stephen J.
+    edition: "2nd"
+    publisher:
+      name: "Springer"
+    year: 2006

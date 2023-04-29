@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://CSTNSystems.github.io/minotaur/schema/v2.1.0",
+  "title": "MINOTAUR Result Schema",
+  "description": "Schema for CSTNSystems/MINOTAUR solver output bundles",
+  "version": "2.1.0",
+
+  "definitions": {
+    "status_code": {
+      "type": "integer",
+      "enum": [0, 1, 2, 3, 4, 5],
+      "description": "Solver exit status: 0=OK, 1=MAXITER, 2=DIVERGED, 3=INVARIANT_VIOL, 4=CONSTRAINT_VIOL, 5=NONPHYSICAL"
+    },
+
+    "convergence_record": {
+      "type": "object",
+      "properties": {
+        "iteration": { "type": "integer", "minimum": 0 },
+        "residual_norm": { "type": "number" },
+        "bpr": { "type": "number" },
+        "t4": { "type": "number" },
+        "step_size": { "type": "number" },
+        "admissible": { "type": "boolean" }
+      },
+      "required": ["iteration", "residual_norm", "bpr", "admissible"]
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "description": "Run metadata for reproducibility",
+      "properties": {
+        "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "solver_version": { "type": "string" },
+        "timestamp_utc": { "type": "string", "format": "date-time" },
+        "git_commit": { "type": ["string", "null"] },
+        "git_dirty": { "type": "boolean" },
+        "platform": { "type": "string" },
+        "fortran_compiler": { "type": "string" },
+        "rust_version": { "type": "string" },
+        "config_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "config_snapshot": { "type": "object" }
+      },
+      "required": ["schema_version", "solver_version", "timestamp_utc", "config_hash"]
+    },
+
+    "summary": {
+      "type": "object",
+      "description": "Final solver results",
+      "properties": {
+        "status": { "$ref": "#/definitions/status_code" },
+        "status_name": { "type": "string" },
+        "converged": { "type": "boolean" },
+        "iterations": { "type": "integer", "minimum": 0 },
+        "final_residual": { "type": "number" },
+        "mass_residual": { "type": "number" },
+        "energy_residual": { "type": "number" },
+        "t4": { "type": "number" },
+        "tsfc_proxy": { "type": "number" },
+        "thrust_proxy": { "type": "number" },
+        "wall_time_ms": { "type": "number" }
+      },
+      "required": ["status", "converged", "iterations", "final_residual"]
+    },
+
+    "convergence": {
+      "type": "object",
+      "description": "Iteration-by-iteration convergence history",
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/convergence_record" }
+        },
+        "final_state": {
+          "type": "object",
+          "properties": {
+            "bpr": { "type": "number" },
+            "opr": { "type": "number" },
+            "t4": { "type": "number" }
+          }
+        }
+      },
+      "required": ["history"]
+    },
+
+    "diagnostics": {
+      "type": "object",
+      "description": "Failure diagnostics (present only on non-convergence)",
+      "properties": {
+        "failure_reason": { "type": "string" },
+        "last_admissible_state": { "type": "object" },
+        "residual_history": {
+          "type": "array",
+          "items": { "type": "number" }
+        },
+        "constraint_violations": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "sensitivity": {
+      "type": "object",
+      "description": "Local sensitivity analysis results",
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "jacobian": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "number" }
+          },
+          "description": "∂outputs/∂parameters matrix (row=output, col=param)"
+        },
+        "step_sizes": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      }
+    }
+  },
+  "required": ["manifest", "summary"]
+}

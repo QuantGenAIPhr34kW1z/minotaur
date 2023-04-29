@@ -1,0 +1,27 @@
+# Baseline 10: Near-transonic condition
+[CSTNSystems]
+program = "CSTNSystems"
+module = "minotaur"
+version = "2.3.0"
+
+[solver]
+max_iter = 96
+tol = 1.0e-10
+damping = 0.4
+
+[invariants]
+mass_tol = 1.0e-9
+energy_tol = 1.0e-9
+
+[constraints]
+t4_max = 1500.0
+
+[cycle]
+mach = 0.92
+alt_km = 10.0
+bpr = 0.65
+opr = 9.0
+eta_comp = 0.83
+eta_turb = 0.87
+eta_nozz = 0.95
+fuel_k = 1.0
